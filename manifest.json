@@ -28,6 +28,7 @@
                 "content.js"
             ],
             "css": [
+                "lib/tailwind.min.css",
                 "styles.css"
             ]
         }

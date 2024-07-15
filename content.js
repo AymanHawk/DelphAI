@@ -1,57 +1,107 @@
 $(document).ready(() => {
+    // Function to add buttons
+    function addButtons() {
+        const targetClass = "OTADH xukFz";
+        const targetDiv = $(`div.${targetClass.replace(/ /g, '.')}`);
+        if (targetDiv.length) {
+            // Create a wrapper div
+            const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
+
+            // SVG icons (empty strings for now)
+            const svgIcon1 = ``;
+            const svgIcon2 = ``;
+
+            // Create buttons with SVG icons
+            const button1 = $('<button>')
+                .html('Generate ' + svgIcon1)
+                .addClass('bg-blue-500 text-white px-2 py-1 m-0 rounded inline-flex items-center')
+                .click(() => callLocalApi()); // Add click event to call API
+
+            const button2 = $('<button>')
+                .html('Improve ' + svgIcon2)
+                .addClass('bg-green-500 text-white px-2 py-1 m-0 rounded inline-flex items-center');
+
+            const captureButton = $('<button>')
+                .html('Capture Emails')
+                .addClass('bg-red-500 text-white px-2 py-1 m-0 rounded inline-flex items-center')
+                .click(() => captureEmailContents());
+
+            // Append buttons to the wrapper div
+            wrapperDiv.append(button1, button2, captureButton);
+
+            // Append the wrapper div to the target div
+            targetDiv.append(wrapperDiv);
+
+            console.log('Buttons with SVG icons added to the target div.');
+        } else {
+            console.log('Target div not found, retrying...');
+            setTimeout(addButtons, 1000); // Retry after 1 second
+        }
+    }
+
+    // Function to remove buttons
+    function removeButtons() {
+        const wrapperDiv = $('#custom-button-wrapper');
+        if (wrapperDiv.length) {
+            wrapperDiv.remove();
+            console.log('Buttons removed from the target div.');
+        }
+    }
+
+    // Function to capture email contents
+    function captureEmailContents() {
+        // Select the email content divs
+        const emailContainers = $('div.WWy1F.WWy1F'); // Updated to select the specific email containers
+        emailContainers.each((index, element) => {
+            // Find the actual email content within each container
+            const emailContent = $(element).find('div[aria-label="Message body"]').text(); // Adjust the selector based on the actual content structure
+            console.log(`Email ${index + 1} content:`, emailContent.trim());
+        });
+    }
+
+    // Function to call the local API
+    function callLocalApi() {
+        fetch('http://localhost:11434/api/generate', {
+            model: 'llama3',
+            messages: [
+                {
+                    "role": "system",
+                    "content": `These are the phishing example jsons. and these are the safe example jsons`
+                },
+            ],
+            stream: false,
+            format: `json`
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API response:', data);
+            })
+            .catch(error => {
+                console.error('Error calling API:', error);
+            });
+    }
+
+    // Check the initial toggle state and add buttons if enabled
+    chrome.storage.sync.get(['toggleButtons'], (result) => {
+        if (result.toggleButtons) {
+            addButtons();
+        } else {
+            console.log('Buttons are toggled off.');
+        }
+    });
+
+    // Listen for messages from the popup script
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.toggleButtons) {
+            addButtons();
+        } else {
+            removeButtons();
+        }
+    });
+
     // Inject Tailwind CSS dynamically
     const tailwindLink = document.createElement('link');
     tailwindLink.rel = 'stylesheet';
     tailwindLink.href = 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
     document.head.appendChild(tailwindLink);
-
-    // Wait for Tailwind CSS to load
-    tailwindLink.onload = function () {
-        // Wait for the target div to be available
-        const targetClass = "OTADH xukFz";
-
-        function addButtons() {
-            const targetDiv = $(`div.${targetClass.replace(/ /g, '.')}`);
-            if (targetDiv.length) {
-                // SVG icons
-                const svgIcon1 = `
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0" class="h-6 w-6 inline">
-              <path
-                  d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
-              <path
-                  d="m72.914 6.4922 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32422 0.56641-0.32422 0.67969 0z" />
-              <path
-                  d="m72.914 66.406 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32031 0.56641-0.32031 0.67969 0z" />
-            </svg>`;
-                const svgIcon2 = `
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0" class="h-6 w-6 inline">
-              <path
-                  d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
-              <path
-                  d="m72.914 6.4922 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32422 0.56641-0.32422 0.67969 0z" />
-              <path
-                  d="m72.914 66.406 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32031 0.56641-0.32031 0.67969 0z" />
-            </svg>`;
-
-                // Create buttons with SVG icons
-                const button1 = $('<button>')
-                    .html('Generate ' + svgIcon1)
-                    .addClass('bg-blue-500 text-white px-2 py-1 m-0 rounded inline-flex items-center');
-
-                const button2 = $('<button>')
-                    .html('Improve ' + svgIcon2)
-                    .addClass('bg-green-500 text-white px-2 py-1 m-0 rounded inline-flex items-center');
-
-                // Append buttons to the target div
-                targetDiv.append(button1, button2);
-
-                console.log('Buttons with SVG icons added to the target div.');
-            } else {
-                console.log('Target div not found, retrying...');
-                setTimeout(addButtons, 1000); // Retry after 1 second
-            }
-        }
-
-        addButtons();
-    };
 });

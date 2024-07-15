@@ -7,21 +7,25 @@
     <title>Outlook Extension</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="lib/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <div class="p-4">
         <h1 class="text-2xl font-bold">Technuf Outlook Extension</h1>
         <button id="action-button" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Click me</button>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0">
-            <path
-                d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
-            <path
-                d="m72.914 6.4922 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32422 0.56641-0.32422 0.67969 0z" />
-            <path
-                d="m72.914 66.406 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32031 0.56641-0.32031 0.67969 0z" />
-        </svg>
+        <div class="mt-4">
+            <label for="toggle-buttons" class="inline-flex items-center cursor-pointer">
+                <span class="mr-2 text-gray-700">Toggle Buttons</span>
+                <input type="checkbox" id="toggle-buttons" class="sr-only">
+                <div class="relative">
+                    <div class="w-10 h-4 bg-gray-300 rounded-full shadow-inner"></div>
+                    <div
+                        class="dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0 transition-transform duration-200 ease-in-out">
+                    </div>
+                </div>
+            </label>
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>

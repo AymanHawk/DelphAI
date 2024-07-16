@@ -1,4 +1,6 @@
 $(document).ready(() => {
+    let emailContents = ""; // Global variable to store captured email contents
+
     // Function to add buttons
     function addButtons() {
         const targetClass = "OTADH xukFz";
@@ -14,16 +16,18 @@ $(document).ready(() => {
             // Create buttons with SVG icons
             const button1 = $('<button>')
                 .html('Generate ' + svgIcon1)
-                .addClass('bg-blue-500 text-white px-2 py-1 m-0 rounded inline-flex items-center')
-                .click(() => callLocalApi()); // Add click event to call API
+                .addClass('bg-blue-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center')
+                .click(() => {
+                    captureEmailContents().then(contents => callOllamaApi(contents));
+                }); // Add click event to capture emails and call API
 
             const button2 = $('<button>')
                 .html('Improve ' + svgIcon2)
-                .addClass('bg-green-500 text-white px-2 py-1 m-0 rounded inline-flex items-center');
+                .addClass('bg-green-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center');
 
             const captureButton = $('<button>')
                 .html('Capture Emails')
-                .addClass('bg-red-500 text-white px-2 py-1 m-0 rounded inline-flex items-center')
+                .addClass('bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center')
                 .click(() => captureEmailContents());
 
             // Append buttons to the wrapper div
@@ -50,35 +54,65 @@ $(document).ready(() => {
 
     // Function to capture email contents
     function captureEmailContents() {
-        // Select the email content divs
-        const emailContainers = $('div.WWy1F.WWy1F'); // Updated to select the specific email containers
-        emailContainers.each((index, element) => {
-            // Find the actual email content within each container
-            const emailContent = $(element).find('div[aria-label="Message body"]').text(); // Adjust the selector based on the actual content structure
-            console.log(`Email ${index + 1} content:`, emailContent.trim());
+        return new Promise((resolve) => {
+            // Select the email content divs
+            const emailContainers = $('div.WWy1F.WWy1F'); // Updated to select the specific email containers
+            emailContents = ""; // Reset the global variable
+            emailContainers.each((index, element) => {
+                // Find the actual email content within each container
+                const emailContent = $(element).find('div[aria-label="Message body"]').text(); // Adjust the selector based on the actual content structure
+                emailContents += `Email ${index + 1} content: ${emailContent.trim()}\n`;
+            });
+            console.log('Captured email contents:', emailContents);
+            resolve(emailContents);
         });
     }
 
-    // Function to call the local API
-    function callLocalApi() {
-        fetch('http://localhost:11434/api/generate', {
-            model: 'llama3',
-            messages: [
-                {
-                    "role": "system",
-                    "content": `These are the phishing example jsons. and these are the safe example jsons`
-                },
-            ],
-            stream: false,
-            format: `json`
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('API response:', data);
+    // Function to call the local API through CORS Anywhere proxy
+    function callOllamaApi(contents) {
+        fetch('http://localhost:11434/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'llama3',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are an assistant that provides potential responses to emails. I will pass the entire thread\'s separate emails as context and you will use that to determine what the response will be. You only respond with the actual suggested response you generate, nothing else.'
+                    },
+                    {
+                        role: 'user',
+                        content: contents // Pass the captured email contents here
+                    }
+                ],
+                stream: false
+                // format: 'json'
             })
-            .catch(error => {
-                console.error('Error calling API:', error);
-            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('API response:', data);
+            if (data && data.message && data.message.content) { // Ensure the response is in the expected format
+                updateEmailContent(data.message.content); // Update the email content with the API response
+            } else {
+                console.error('Unexpected API response format:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error calling API:', error);
+        });
+    }
+
+    // Function to update email content div
+    function updateEmailContent(content) {
+        $('div.elementToProof').text(content);
     }
 
     // Check the initial toggle state and add buttons if enabled

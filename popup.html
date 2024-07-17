@@ -7,6 +7,7 @@
     <title>Outlook Extension</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="lib/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -26,6 +27,21 @@
                 </div>
             </label>
         </div>
+
+        <div class="btnwrapper">
+            <button id="btnleft" class="btn">Button</button>
+            <div id="btndivider" class="dropdown">
+                <button id="btnright" class="btn">
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Professional</a>
+                    <a href="#">Informal</a>
+                    <a href="#">Silly</a>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script src="popup.js"></script>
 </body>

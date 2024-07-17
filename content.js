@@ -61,10 +61,10 @@ $(document).ready(() => {
         .addClass("dropdown");
       const btnRight = $("<button>").attr("id", "btnright").addClass("btn mr-2")
         .html(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-    </svg>
-  `); // Added SVG for dropdown icon
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 1 0 111.414 1.414l-4 4a1 1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+</svg>
+`); // Added SVG for dropdown icon
       const dropdownContent = $("<div>").addClass("dropdown-content");
       const option1 = $("<a>").attr("href", "#").text("Professional");
       const option2 = $("<a>").attr("href", "#").text("Informal");
@@ -81,6 +81,15 @@ $(document).ready(() => {
         improveButton,
         captureButton
       );
+
+      // Add event listener to position dropdown content correctly
+      btnRight.on("mouseover", () => {
+        const rect = btnRight[0].getBoundingClientRect();
+        dropdownContent.css({
+          top: `${rect.bottom}px`,
+          left: `${rect.left}px`,
+        });
+      });
 
       // Append the wrapper div to the target div
       targetDiv.append(wrapperDiv);

@@ -1,11 +1,11 @@
 $(document).ready(() => {
   let emailContents = ""; // Global variable to store captured email contents
 
-  // Function to add buttons
-  function addButtons() {
-    const targetClass = "OTADH xukFz";
-    const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
-    if (targetDiv.length) {
+// Function to add buttons
+function addButtons() {
+  const targetClass = "OTADH xukFz";
+  const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
+  if (targetDiv.length) {
       // Create a wrapper div
       const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
 
@@ -15,91 +15,134 @@ $(document).ready(() => {
 
       // Create Generate button with onclick function
       const generateButton = $("<button>")
-        .html("Generate " + svgIcon1)
-        .addClass(
-          "bg-blue-600 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
-        )
-        .click(() => {
-          simulateClick().then(() =>
-            captureEmailContents().then((contents) => callOllamaApi(contents))
-          );
-        }); // Add click event to capture emails and call API
+          .html("Generate " + svgIcon1)
+          .addClass(
+              "bg-blue-600 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
+          )
+          .click(() => {
+              simulateClick().then(() =>
+                  captureEmailContents().then((contents) => callOllamaApi(contents))
+              );
+          }); // Add click event to capture emails and call API
 
-      // Create Improve button with onclick function
-      const improveButton = $("<button>")
-        .html("Improve " + svgIcon2)
-        .addClass(
-          "bg-green-600 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
-        )
+      // Create Improve button with dropdown structure
+      const btnWrapperImprove = $("<div>").addClass(
+        "btnwrapper inline-flex items-center relative"
+      );
+      const btnLeftImprove = $("<button>")
+        .attr("id", "btnleft-improve")
+        .addClass("btn font-semibold")
+        .text("Improve")
         .click(() => {
           simulateClick().then(() =>
             captureEmailContents().then((contents) => callImproveApi(contents))
           );
         });
+      const btnDividerImprove = $("<div>")
+        .attr("id", "btndivider-improve")
+        .addClass("dropdown relative");
+      const btnRightImprove = $("<button>")
+        .attr("id", "btnright-improve")
+        .addClass("btn mr-2")
+        .html(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        `); // Added SVG for dropdown icon
+
+      // Create the modal structure for Improve button
+      const modalImprove = $('<div>').addClass('dropdown-modal hidden');
+      const option1Improve = $("<button>").addClass('dropdown-option').text("Professional");
+      const option2Improve = $("<button>").addClass('dropdown-option').text("Informal");
+      const option3Improve = $("<button>").addClass('dropdown-option').text("Silly");
+
+      modalImprove.append(option1Improve, option2Improve, option3Improve);
+
+      btnDividerImprove.append(btnRightImprove, modalImprove);
+      btnWrapperImprove.append(btnLeftImprove, btnDividerImprove);
 
       const captureButton = $("<button>")
-        .html("Capture Emails")
-        .addClass(
-          "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
-        )
-        .click(() => {
-          simulateClick().then(() => captureEmailContents());
-        });
+          .html("Capture Emails")
+          .addClass(
+              "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
+          )
+          .click(() => {
+              simulateClick().then(() => captureEmailContents());
+          });
+
       // Create dropdown button structure
       const btnWrapper = $("<div>").addClass(
-        "btnwrapper inline-flex items-center"
+          "btnwrapper inline-flex items-center relative"
       );
       const btnLeft = $("<button>")
-        .attr("id", "btnleft")
-        .addClass("btn font-semibold")
-        .text("Tester")
-        .click(() => {
-          alert("Tester Clicked");
-        });
+          .attr("id", "btnleft")
+          .addClass("btn font-semibold")
+          .text("Generate")
+          .click(() => {
+              simulateClick().then(() =>
+                  captureEmailContents().then((contents) => callOllamaApi(contents))
+              );
+          }); // Add click event to capture emails and call API
       const btnDivider = $("<div>")
-        .attr("id", "btndivider")
-        .addClass("dropdown");
+          .attr("id", "btndivider")
+          .addClass("dropdown relative");
       const btnRight = $("<button>").attr("id", "btnright").addClass("btn mr-2")
-        .html(`
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 1 0 111.414 1.414l-4 4a1 1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-</svg>
-`); // Added SVG for dropdown icon
-      const dropdownContent = $("<div>").addClass("dropdown-content");
-      const option1 = $("<a>").attr("href", "#").text("Professional");
-      const option2 = $("<a>").attr("href", "#").text("Informal");
-      const option3 = $("<a>").attr("href", "#").text("Silly");
+          .html(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          `); // Added SVG for dropdown icon
 
-      dropdownContent.append(option1, option2, option3);
-      btnDivider.append(btnRight, dropdownContent);
+      // Create the modal structure
+      const modal = $('<div>').addClass('dropdown-modal hidden');
+      const option1 = $("<button>").addClass('dropdown-option').text("Professional");
+      const option2 = $("<button>").addClass('dropdown-option').text("Informal");
+      const option3 = $("<button>").addClass('dropdown-option').text("Silly");
+
+      modal.append(option1, option2, option3);
+
+      btnDivider.append(btnRight, modal);
       btnWrapper.append(btnLeft, btnDivider);
 
       // Append buttons to the wrapper div
       wrapperDiv.append(
-        btnWrapper,
-        generateButton,
-        improveButton,
-        captureButton
+          btnWrapper,
+          btnWrapperImprove,
+          captureButton
       );
-
-      // Add event listener to position dropdown content correctly
-      btnRight.on("mouseover", () => {
-        const rect = btnRight[0].getBoundingClientRect();
-        dropdownContent.css({
-          top: `${rect.bottom}px`,
-          left: `${rect.left}px`,
-        });
-      });
 
       // Append the wrapper div to the target div
       targetDiv.append(wrapperDiv);
 
       console.log("Buttons with SVG icons added to the target div.");
-    } else {
+
+      // Add event listener to toggle modal visibility for Generate button
+      btnRight.on("click", (e) => {
+          e.stopPropagation();
+          modal.toggleClass('hidden');
+      });
+
+      // Add event listener to toggle modal visibility for Improve button
+      btnRightImprove.on("click", (e) => {
+          e.stopPropagation();
+          modalImprove.toggleClass('hidden');
+      });
+
+      // Hide modal when clicking outside
+      $(document).on("click", (e) => {
+          if (!btnWrapper.is(e.target) && btnWrapper.has(e.target).length === 0) {
+              modal.addClass('hidden');
+          }
+          if (!btnWrapperImprove.is(e.target) && btnWrapperImprove.has(e.target).length === 0) {
+              modalImprove.addClass('hidden');
+          }
+      });
+  } else {
       console.log("Target div not found, retrying...");
       setTimeout(addButtons, 100); // Retry after 1 second
-    }
   }
+}
+
 
   // Function to remove buttons
   function removeButtons() {

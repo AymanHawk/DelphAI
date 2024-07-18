@@ -1,11 +1,11 @@
 $(document).ready(() => {
   let emailContents = ""; // Global variable to store captured email contents
 
-// Function to add buttons
-function addButtons() {
-  const targetClass = "OTADH xukFz";
-  const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
-  if (targetDiv.length) {
+  // Function to add buttons
+  function addButtons() {
+    const targetClass = "OTADH xukFz";
+    const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
+    if (targetDiv.length) {
       // Create a wrapper div
       const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
 
@@ -15,15 +15,15 @@ function addButtons() {
 
       // Create Generate button with onclick function
       const generateButton = $("<button>")
-          .html("Generate " + svgIcon1)
-          .addClass(
-              "bg-blue-600 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
-          )
-          .click(() => {
-              simulateClick().then(() =>
-                  captureEmailContents().then((contents) => callOllamaApi(contents))
-              );
-          }); // Add click event to capture emails and call API
+        .html("Generate " + svgIcon1)
+        .addClass(
+          "bg-blue-600 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
+        )
+        .click(() => {
+          simulateClick().then(() =>
+            captureEmailContents().then((contents) => callOllamaApi(contents))
+          );
+        }); // Add click event to capture emails and call API
 
       // Create Improve button with dropdown structure
       const btnWrapperImprove = $("<div>").addClass(
@@ -34,21 +34,22 @@ function addButtons() {
         .addClass("btn font-semibold")
         .text("Improve")
         .click(() => {
-          simulateClick().then(() =>
-            captureEmailContents().then((contents) => callImproveApi(contents))
-          );
+          callImproveApi(); // Directly call the improved API function without simulating clicks or capturing email contents
         });
+
       const btnDividerImprove = $("<div>")
         .attr("id", "btndivider-improve")
         .addClass("dropdown relative");
+
       const btnRightImprove = $("<button>")
         .attr("id", "btnright-improve")
         .addClass("btn mr-2")
         .html(`
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-        `); // Added SVG for dropdown icon
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    `);
+
 
       // Create the modal structure for Improve button
       const modalImprove = $('<div>').addClass('dropdown-modal hidden');
@@ -61,33 +62,34 @@ function addButtons() {
       btnDividerImprove.append(btnRightImprove, modalImprove);
       btnWrapperImprove.append(btnLeftImprove, btnDividerImprove);
 
+
       const captureButton = $("<button>")
-          .html("Capture Emails")
-          .addClass(
-              "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
-          )
-          .click(() => {
-              simulateClick().then(() => captureEmailContents());
-          });
+        .html("Capture Emails")
+        .addClass(
+          "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
+        )
+        .click(() => {
+          simulateClick().then(() => captureEmailContents());
+        });
 
       // Create dropdown button structure
       const btnWrapper = $("<div>").addClass(
-          "btnwrapper inline-flex items-center relative"
+        "btnwrapper inline-flex items-center relative"
       );
       const btnLeft = $("<button>")
-          .attr("id", "btnleft")
-          .addClass("btn font-semibold")
-          .text("Generate")
-          .click(() => {
-              simulateClick().then(() =>
-                  captureEmailContents().then((contents) => callOllamaApi(contents))
-              );
-          }); // Add click event to capture emails and call API
+        .attr("id", "btnleft")
+        .addClass("btn font-semibold")
+        .text("Generate")
+        .click(() => {
+          simulateClick().then(() =>
+            captureEmailContents().then((contents) => callOllamaApi(contents))
+          );
+        }); // Add click event to capture emails and call API
       const btnDivider = $("<div>")
-          .attr("id", "btndivider")
-          .addClass("dropdown relative");
+        .attr("id", "btndivider")
+        .addClass("dropdown relative");
       const btnRight = $("<button>").attr("id", "btnright").addClass("btn mr-2")
-          .html(`
+        .html(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -106,10 +108,11 @@ function addButtons() {
 
       // Append buttons to the wrapper div
       wrapperDiv.append(
-          btnWrapper,
-          btnWrapperImprove,
-          captureButton
+        btnWrapper,
+        btnWrapperImprove, // Append the Improve button structure
+        captureButton
       );
+
 
       // Append the wrapper div to the target div
       targetDiv.append(wrapperDiv);
@@ -118,30 +121,30 @@ function addButtons() {
 
       // Add event listener to toggle modal visibility for Generate button
       btnRight.on("click", (e) => {
-          e.stopPropagation();
-          modal.toggleClass('hidden');
+        e.stopPropagation();
+        modal.toggleClass('hidden');
       });
 
       // Add event listener to toggle modal visibility for Improve button
       btnRightImprove.on("click", (e) => {
-          e.stopPropagation();
-          modalImprove.toggleClass('hidden');
+        e.stopPropagation();
+        modalImprove.toggleClass('hidden');
       });
 
       // Hide modal when clicking outside
       $(document).on("click", (e) => {
-          if (!btnWrapper.is(e.target) && btnWrapper.has(e.target).length === 0) {
-              modal.addClass('hidden');
-          }
-          if (!btnWrapperImprove.is(e.target) && btnWrapperImprove.has(e.target).length === 0) {
-              modalImprove.addClass('hidden');
-          }
+        if (!btnWrapper.is(e.target) && btnWrapper.has(e.target).length === 0) {
+          modal.addClass('hidden');
+        }
+        if (!btnWrapperImprove.is(e.target) && btnWrapperImprove.has(e.target).length === 0) {
+          modalImprove.addClass('hidden');
+        }
       });
-  } else {
+    } else {
       console.log("Target div not found, retrying...");
       setTimeout(addButtons, 100); // Retry after 1 second
+    }
   }
-}
 
 
   // Function to remove buttons
@@ -186,9 +189,8 @@ function addButtons() {
           const emailContent = $(element)
             .find('div[aria-label="Message body"]')
             .text();
-          emailContents += `Email ${
-            index + 1
-          } content: ${emailContent.trim()}\n`;
+          emailContents += `Email ${index + 1
+            } content: ${emailContent.trim()}\n`;
         });
 
         console.log("Captured email contents:", emailContents);
@@ -231,7 +233,6 @@ function addButtons() {
     ],
   };
 
-  // Function to call the local API for generating response
   function callOllamaApi(contents) {
     fetch("http://localhost:11434/api/chat", {
       method: "POST",
@@ -243,9 +244,7 @@ function addButtons() {
         messages: [
           {
             role: "system",
-            content: `You respond to emails using the email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. You only return responses as JSON. The response you will return will be in this format: ${JSONformat}. These are some example responses: ${
-              sampleResponses || "Not Provided Yet"
-            } And your response will be in this tone ${JSONformat.tone}`,
+            content: `You respond to emails using the email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. You only return responses as JSON. The response you will return will be in this format: ${JSON.stringify(JSONformat)}. These are some example responses: ${JSON.stringify(sampleResponses)} And your response will be in this tone ${JSONformat.tone}`,
           },
           {
             role: "user",
@@ -254,6 +253,54 @@ function addButtons() {
         ],
         stream: false,
         format: "json",
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("API response:", data);
+        if (data && data.message && data.message.content) {
+          const jsonResponse = JSON.parse(data.message.content); // Parse the JSON content
+          if (jsonResponse && jsonResponse.suggestedResponse) {
+            updateEmailContent(jsonResponse.suggestedResponse); // Update the email content with the suggested response
+          } else {
+            console.error("Suggested response not found in the API response:", data);
+          }
+        } else {
+          console.error("Unexpected API response format:", data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error calling API:", error);
+      });
+  }
+  
+
+
+  function callImproveApi() {
+    const existingText = $("div.elementToProof").text(); // Capture the existing text in the div
+    fetch("http://localhost:11434/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3",
+        messages: [
+          {
+            role: "system",
+            content: `you are a grammar wizard. I will give you a series of words and you will correct its grammar, punctuation, capitalization, spelling, and anything else of that nature. You will return this corrected response and nothing else. The response you return will return will be in this format: ${JSON.stringify(improvedResponseSample)}`,
+          },
+          {
+            role: "user",
+            content: existingText, // Pass the captured existing text here
+          },
+        ],
+        stream: false,
       }),
     })
       .then((response) => {
@@ -276,49 +323,22 @@ function addButtons() {
       });
   }
 
-  // Function to call the local API for improving response
-  function callImproveApi(contents) {
-    fetch("http://localhost:11434/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama3",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are an assistant that improves the quality of email responses. I will pass the entire thread's separate emails as context and you will use that to provide an improved version of the response. You only respond with the improved response you generate, nothing else.",
-          },
-          {
-            role: "user",
-            content: contents, // Pass the captured email contents here
-          },
-        ],
-        stream: false,
-        // format: 'json'
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("API response:", data);
-        if (data && data.message && data.message.content) {
-          // Ensure the response is in the expected format
-          updateEmailContent(data.message.content); // Update the email content with the API response
-        } else {
-          console.error("Unexpected API response format:", data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error calling API:", error);
-      });
-  }
+const improvedResponseSample = {
+  examples: [
+    {
+      incomingResponse: "Todya wIll be a good day.. i cant wait to get started !",
+      improvedResponse: "Today will be a good day. I can't wait to get started!",
+    },
+    {
+      incomingResponse: "Heyy, how are you doing. I hopee youre welll.",
+      improvedResponse: "Hey, how are you doing? I hope you're well.",
+    },
+    {
+      incomingResponse: "Whta is the plan for tomrrow? Let me know if I need to prepare anythng.",
+      improvedResponse: "What is the plan for tomorrow? Let me know if I need to prepare anything.",
+    },
+  ]
+}
 
   // Function to update email content div
   function updateEmailContent(content) {

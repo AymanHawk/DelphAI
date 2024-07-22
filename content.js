@@ -1,11 +1,15 @@
 $(document).ready(() => {
   let emailContents = ""; // Global variable to store captured email contents
 
+  // Retrieve and log the selected tone from local storage
+  const selectedTone = localStorage.getItem('selectedTone');
+  console.log('Retrieved Selected Tone:', selectedTone);
+
   // Function to add buttons
   function addButtons() {
     const targetClass = "OTADH xukFz";
     const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
-    if (targetDiv.length) {
+    if (targetDiv.length && !targetDiv.find("#custom-button-wrapper").length) {
       // Create a wrapper div
       const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
 
@@ -32,7 +36,7 @@ $(document).ready(() => {
       const btnLeftImprove = $("<button>")
         .attr("id", "btnleft-improve")
         .addClass("btn font-semibold")
-        .text("Improve")
+        .text("Optimize")
         .click(() => {
           callImproveApi(); // Directly call the improved API function without simulating clicks or capturing email contents
         });
@@ -45,31 +49,33 @@ $(document).ready(() => {
         .attr("id", "btnright-improve")
         .addClass("btn mr-2")
         .html(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
+<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>
     `);
 
-
       // Create the modal structure for Improve button
-      const modalImprove = $('<div>').addClass('dropdown-modal hidden');
-      const option1Improve = $("<button>").addClass('dropdown-option').text("Professional");
-      const option2Improve = $("<button>").addClass('dropdown-option').text("Informal");
-      const option3Improve = $("<button>").addClass('dropdown-option').text("Silly");
+      const modalImprove = $("<div>").addClass("dropdown-modal hidden");
+      const option1Improve = $("<button>")
+        .addClass("dropdown-option")
+        .text("Professional");
+      const option2Improve = $("<button>")
+        .addClass("dropdown-option")
+        .text("Informal");
+      const option3Improve = $("<button>")
+        .addClass("dropdown-option")
+        .text("Silly");
 
       modalImprove.append(option1Improve, option2Improve, option3Improve);
 
       btnDividerImprove.append(btnRightImprove, modalImprove);
       btnWrapperImprove.append(btnLeftImprove, btnDividerImprove);
 
-
       const captureButton = $("<button>")
-        .html("Capture Emails")
+        .html("Stream")
         .addClass(
           "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
         )
         .click(() => {
-          simulateClick().then(() => captureEmailContents());
+          simulateClick().then(() => streamOllamaApi());
         });
 
       // Create dropdown button structure
@@ -90,16 +96,18 @@ $(document).ready(() => {
         .addClass("dropdown relative");
       const btnRight = $("<button>").attr("id", "btnright").addClass("btn mr-2")
         .html(`
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
+<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>
           `); // Added SVG for dropdown icon
 
       // Create the modal structure
-      const modal = $('<div>').addClass('dropdown-modal hidden');
-      const option1 = $("<button>").addClass('dropdown-option').text("Professional");
-      const option2 = $("<button>").addClass('dropdown-option').text("Informal");
-      const option3 = $("<button>").addClass('dropdown-option').text("Silly");
+      const modal = $("<div>").addClass("dropdown-modal hidden");
+      const option1 = $("<button>")
+        .addClass("dropdown-option")
+        .text("Professional");
+      const option2 = $("<button>")
+        .addClass("dropdown-option")
+        .text("Informal");
+      const option3 = $("<button>").addClass("dropdown-option").text("Silly");
 
       modal.append(option1, option2, option3);
 
@@ -113,7 +121,6 @@ $(document).ready(() => {
         captureButton
       );
 
-
       // Append the wrapper div to the target div
       targetDiv.append(wrapperDiv);
 
@@ -122,37 +129,30 @@ $(document).ready(() => {
       // Add event listener to toggle modal visibility for Generate button
       btnRight.on("click", (e) => {
         e.stopPropagation();
-        modal.toggleClass('hidden');
+        modal.toggleClass("hidden");
       });
 
       // Add event listener to toggle modal visibility for Improve button
       btnRightImprove.on("click", (e) => {
         e.stopPropagation();
-        modalImprove.toggleClass('hidden');
+        modalImprove.toggleClass("hidden");
       });
 
       // Hide modal when clicking outside
       $(document).on("click", (e) => {
         if (!btnWrapper.is(e.target) && btnWrapper.has(e.target).length === 0) {
-          modal.addClass('hidden');
+          modal.addClass("hidden");
         }
-        if (!btnWrapperImprove.is(e.target) && btnWrapperImprove.has(e.target).length === 0) {
-          modalImprove.addClass('hidden');
+        if (
+          !btnWrapperImprove.is(e.target) &&
+          btnWrapperImprove.has(e.target).length === 0
+        ) {
+          modalImprove.addClass("hidden");
         }
       });
     } else {
-      console.log("Target div not found, retrying...");
+      // console.log("Target div not found, retrying..."); //TODO check!!
       setTimeout(addButtons, 100); // Retry after 1 second
-    }
-  }
-
-
-  // Function to remove buttons
-  function removeButtons() {
-    const wrapperDiv = $("#custom-button-wrapper");
-    if (wrapperDiv.length) {
-      wrapperDiv.remove();
-      console.log("Buttons removed from the target div.");
     }
   }
 
@@ -207,7 +207,7 @@ $(document).ready(() => {
       "Hey Jared, I hope you're doing well. I wanted to follow up on the email I sent you last week. Please let me know if you have any updates. Best Regards, Ayman Haque",
   };
 
-  const sampleResponses = {
+  const toneGuidlines = {
     examples: [
       {
         tone: "Professional",
@@ -244,42 +244,83 @@ $(document).ready(() => {
         messages: [
           {
             role: "system",
-            content: `You respond to emails using the email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. You only return responses as JSON. The response you will return will be in this format: ${JSON.stringify(JSONformat)}. These are some example responses: ${JSON.stringify(sampleResponses)} And your response will be in this tone ${JSONformat.tone}`,
+            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. And your response will be in this tone: ${JSONformat.tone}`,
           },
           {
             role: "user",
-            content: contents, // Pass the captured email contents here
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.`, // TODO make prompt for concise and accurate and make sure to mention 
           },
         ],
-        stream: false,
-        format: "json",
+        stream: true,
+        // format: "json",
       }),
+    }).then((response) => {
+      console.log(response);
+      return response.body
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok ${response.statusText}`);
+      .then((stream) => {
+        const reader = stream.getReader();
+        function readSteam() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              console.log('Stream completed');
+              return;
+            }
+            const chunk = new TextDecoder().decode(value);
+            const JSONdata = JSON.parse(chunk);
+            appendEmailContent(JSONdata.message.content);
+            readSteam(); // Continue reading the stream
+          });
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("API response:", data);
-        if (data && data.message && data.message.content) {
-          const jsonResponse = JSON.parse(data.message.content); // Parse the JSON content
-          if (jsonResponse && jsonResponse.suggestedResponse) {
-            updateEmailContent(jsonResponse.suggestedResponse); // Update the email content with the suggested response
-          } else {
-            console.error("Suggested response not found in the API response:", data);
-          }
-        } else {
-          console.error("Unexpected API response format:", data);
+        updateEmailContent('');
+        readSteam();
+      }).catch((error) => {
+        console.error("Error calling API:", error);
+      });
+  }
+
+  function streamOllamaApi(contents) {
+    fetch("http://localhost:11434/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3",
+        messages: [
+          {
+            role: "system",
+            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. And your response will be in this tone: ${JSONformat.tone}`,
+          },
+          {
+            role: "user",
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}`, // TODO make prompt for concise and accurate and make sure to mention 
+          },
+        ],
+        stream: true,
+        // format: "json",
+      }),
+    }).then((response) => response.body)
+      .then((stream) => {
+        const reader = stream.getReader();
+        function readStream() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              console.log('Stream completed');
+              return;
+            }
+            const chunk = new TextDecoder().decode(value);
+            const JSONdata = JSON.parse(chunk);
+            appendEmailContent(JSONdata.message.content);
+            readStream(); // Continue reading the stream
+          });
         }
+        readStream();
       })
       .catch((error) => {
         console.error("Error calling API:", error);
       });
   }
-  
-
 
   function callImproveApi() {
     const existingText = $("div.elementToProof").text(); // Capture the existing text in the div
@@ -293,38 +334,39 @@ $(document).ready(() => {
         messages: [
           {
             role: "system",
-            content: `you are a grammar wizard. I will give you a series of words and you will correct its grammar, punctuation, capitalization, spelling, and anything else of that nature. You will return this corrected response and nothing else. The response you return will return will be in this format: ${JSON.stringify(improvedResponseSample)}`,
+            content: `you are a grammar wizard. I will give you a series of words and you will correct its grammar, punctuation, capitalization, spelling, and anything else of that nature. You will return this corrected response and nothing else.`,
           },
           {
             role: "user",
-            content: existingText, // Pass the captured existing text here
+            content: existingText,
           },
         ],
-        stream: false,
+        stream: true,
       }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok ${response.statusText}`);
+      .then((response) => response.body)
+      .then((stream) => {
+        const reader = stream.getReader();
+        function readSteam() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              console.log('Stream completed');
+              return;
+            }
+            const chunk = new TextDecoder().decode(value);
+            const JSONdata = JSON.parse(chunk);
+            appendEmailContent(JSONdata.message.content);
+            readSteam(); // Continue reading the stream
+          });
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("API response:", data);
-        if (data && data.message && data.message.content) {
-          // Ensure the response is in the expected format
-          updateEmailContent(data.message.content); // Update the email content with the API response
-        } else {
-          console.error("Unexpected API response format:", data);
-        }
-      })
-      .catch((error) => {
+        updateEmailContent('');
+        readSteam();
+      }).catch((error) => {
         console.error("Error calling API:", error);
       });
   }
 
-const improvedResponseSample = {
-  examples: [
+  const improvedResponseSample = [
     {
       incomingResponse: "Todya wIll be a good day.. i cant wait to get started !",
       improvedResponse: "Today will be a good day. I can't wait to get started!",
@@ -337,31 +379,54 @@ const improvedResponseSample = {
       incomingResponse: "Whta is the plan for tomrrow? Let me know if I need to prepare anythng.",
       improvedResponse: "What is the plan for tomorrow? Let me know if I need to prepare anything.",
     },
-  ]
-}
+  ];
 
   // Function to update email content div
   function updateEmailContent(content) {
     $("div.elementToProof").text(content);
   }
 
-  // Check the initial toggle state and add buttons if enabled
-  chrome.storage.sync.get(["toggleButtons"], (result) => {
-    if (result.toggleButtons) {
-      addButtons();
-    } else {
-      console.log("Buttons are toggled off.");
-    }
-  });
+  function appendEmailContent(content) {
 
-  // Listen for messages from the popup script
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.toggleButtons) {
-      addButtons();
-    } else {
-      removeButtons();
+    if (`${content}`.includes('\n')) {
+      content = `${content}`.replace(/\n/g, '<br>');
     }
-  });
+    $("div.elementToProof").append(content);
+  }
+
+  // Function to add mutation observer
+  function observeThreadChanges() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+          // Check if the added nodes include an email thread
+          mutation.addedNodes.forEach((node) => {
+            if (
+              $(node).find(".OTADH.xukFz").length ||
+              $(node).hasClass("OTADH xukFz")
+            ) {
+              addButtons();
+            }
+          });
+        }
+      });
+    });
+
+    const config = { childList: true, subtree: true };
+    const targetNode = document.querySelector("body"); // Adjust this selector to the specific element that changes when switching threads
+
+    if (targetNode) {
+      observer.observe(targetNode, config);
+    } else {
+      console.log("Target node for mutation observer not found.");
+    }
+  }
+
+  // Initial call to add buttons
+  addButtons();
+
+  // Start observing for thread changes
+  observeThreadChanges();
 
   // Inject Tailwind CSS dynamically
   const tailwindLink = document.createElement("link");

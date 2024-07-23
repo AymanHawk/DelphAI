@@ -1,10 +1,6 @@
 $(document).ready(() => {
   let emailContents = ""; // Global variable to store captured email contents
 
-  // Retrieve and log the selected tone from local storage
-  const selectedTone = localStorage.getItem('selectedTone');
-  console.log('Retrieved Selected Tone:', selectedTone);
-
   // Function to add buttons
   function addButtons() {
     const targetClass = "OTADH xukFz";
@@ -199,6 +195,8 @@ $(document).ready(() => {
     });
   }
 
+
+
   const JSONformat = {
     tone: "Professional",
     recipientName: "Ayman Haque",
@@ -234,6 +232,8 @@ $(document).ready(() => {
   };
 
   function callOllamaApi(contents) {
+    const selectedTone = localStorage.getItem('selectedTone') || 'Professional'; // Default to 'Professional' if not set
+    console.log('Selected Tone from localStorage:', selectedTone);
     fetch("http://localhost:11434/api/chat", {
       method: "POST",
       headers: {
@@ -244,11 +244,11 @@ $(document).ready(() => {
         messages: [
           {
             role: "system",
-            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. And your response will be in this tone: ${JSONformat.tone}`,
+            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient.`,
           },
           {
             role: "user",
-            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.`, // TODO make prompt for concise and accurate and make sure to mention 
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.  And your response will be in this tone: ${selectedTone}. Silly means you are lack a bit of formality and are more gleefull than usual. You could include a joke, if you see fit and try to make the email more fun.`, // TODO make prompt for concise and accurate and make sure to mention 
           },
         ],
         stream: true,
@@ -434,4 +434,17 @@ $(document).ready(() => {
   tailwindLink.href =
     "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
   document.head.appendChild(tailwindLink);
+
+
+
 });
+
+//capture local storage
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "logToneSelect") {
+    console.log('Selected Tone:', request.tone);
+    localStorage.setItem('selectedTone', request.tone);
+  }
+});
+
+

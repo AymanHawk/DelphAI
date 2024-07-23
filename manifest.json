@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Outlook Extension",
+    "name": "Outlook A.I Pal",
     "version": "1.0",
-    "description": "A Chrome extension for Microsoft Outlook using Tailwind CSS, jQuery, and JavaScript.",
+    "description": "A Chrome extension for Microsoft Outlook leveraging generative A.I to currate responses and improve responses.",
     "permissions": [
         "activeTab",
         "storage"

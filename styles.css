@@ -1,89 +1,117 @@
 @import url("https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap");
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 14px; /* Adjust as needed to match Outlook's font size */
-  line-height: 1.6; /* Adjust as needed to match Outlook's line height */
-  color: #333; /* Adjust as needed to match Outlook's text color */
-  font-weight: 600;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    /* Adjust as needed to match Outlook's font size */
+    line-height: 1.6;
+    /* Adjust as needed to match Outlook's line height */
+    color: #333;
+    /* Adjust as needed to match Outlook's text color */
+    font-weight: 600;
 }
 
 body {
-  width: 300px;
-  height: 500px;
+    width: 300px;
+    height: 500px;
 }
 
 /* Custom styles for the toggle switch */
-#toggle-buttons:checked + .relative .dot {
-  transform: translateX(100%);
+#toggle-buttons:checked+.relative .dot {
+    transform: translateX(100%);
 }
 
 /* Dropdown Button */
 
-#btnleft {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-right: white solid 0.5px;
-  padding: 6px 15px;
+#btnleft,
+#btnright,
+#btnleft-improve,
+#btnright-improve {
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: #106BBD;
+    color: white;
 }
 
-#btndivider {
-  /* border-left: 0.5px solid rgb(255, 255, 255); */
+#btnleft,
+#btnleft-improve {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 0.5px solid white;
+    padding: 6px 18px;
 }
 
-#btnright {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: 6px 8px;
+#btndivider,
+#btndivider-improve {
+    position: relative;
 }
 
-
+#btnright,
+#btnright-improve {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 6px;
+}
 
 .btn {
-  background-color: #2e6cbd;
-  color: white;
-  /* font-size: 16px; */
-  border: none;
-  outline: none;
+    background-color: #2e6cbd;
+    color: white;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* The container <div> - needed to position the dropdown content */
 .dropdown {
-  position: absolute;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #ffffff;
-  min-width: 160px;
-  z-index: 1;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* Add this line */
-  border-radius: 5px; /* Optional: Add some rounding to the corners */
+.dropdown-modal {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    z-index: 1000;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    top: -120%; /* Adjust as needed to position above the button */
+    left: 0;
+    transform: translateY(-10px);
+    padding: 10px;
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 6px 20px;
-  text-decoration: none;
-  display: block;
+.dropdown-option {
+    display: block;
+    color: black;
+    padding: 6px 20px;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  background-color: #ddd;
+.dropdown-option:hover {
+    background-color: #ddd;
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
+.hidden {
+    display: none;
 }
 
-/* Change the background color of the dropdown button when the dropdown content is shown */
 .btn:hover,
 .dropdown:hover .btn {
-  background-color: #0b7dda;
+    background-color: #0b7dda;
+}
+
+.btnwrapper {
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    z-index: 1000;
 }

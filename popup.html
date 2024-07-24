@@ -12,54 +12,74 @@
     <script src="lib/jquery-3.6.0.min.js"></script>
 </head>
 
-<body class="min-h-screen flex flex-col">
-    <div class="p-4 flex flex-col flex-grow">
-        <h1 class="text-2xl font-bold text-center">Technuf Outlook Extension</h1>
+<body>
 
-        <hr class="shadow-md mt-1 mb-2">
+    <div class="min-h-screen flex flex-col">
 
-        <div>
-            <form class="max-w-sm mx-auto">
-                <label for="toneSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Select Generated Response Tone
-                </label>
-                <select id="toneSelect"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="Professional" selected>Professional</option>
-                    <option value="Informal">Informal</option>
-                    <option value="Silly">Silly</option>
-                    <option value="Funny">Funny</option>
-                    <option value="Goofy" disabled="true">Goofy ~ Subscription Required</option>
-                    <option value="Sentiment" disabled="true">Sentiment Analysis ~ Subscription Required</option>
-                </select>
-            </form>
-        </div>
-        <div>
-            <form class="max-w-sm mx-auto">
-                <label for="responseType" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Select Generated Response Type
-                </label>
-                <select id="responseType"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="Normal" selected> Normal</option>
-                    <option value="Short">Short</option>
-                    <option value="Lengthy">Lengthy</option>
-                    <option value="Brief" disabled="true">Brief ~ Subscription Required</option>
-                    <option value="Sentiment Analysis" disabled="true">Sentiment Analysis ~ Subscription Required
-                    </option>
-                </select>
-            </form>
-        </div>
+        <div class="p-4 flex flex-col flex-grow">
+            <h1 class="text-2xl font-bold text-center mb-1">Delph@i</h1>
 
-        <div class="mt-auto">
-            <div class="text-blue-500">
-                <a href="https://www.aymanhaque.com/" target="_blank">Browse Memberships</a>
+            <hr class="shadow-md mt-1 mb-2">
+
+            <div>
+                <form class="max-w-sm mx-auto">
+                    <label for="toneSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Response Tone
+                    </label>
+                    <select id="toneSelect"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="" disabled>Select</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Informal">Informal</option>
+                        <option value="Silly">Silly</option>
+                        <option value="Funny">Funny</option>
+                        <option value="Goofy" disabled="true">Goofy ~ Subscription Required</option>
+                        <option value="Sentiment" disabled="true">Sentiment Analysis ~ Subscription Required</option>
+                    </select>
+                </form>
             </div>
-            <div>Click
-                <a class="text-blue-500"
-                    href="https://github.com/AymanHawk/Technuf-Outlook-Extension/tree/feature-ollama-api"
-                    target="_blank">here</a>
-                for documentation
+            <div>
+                <form class="max-w-sm mx-auto">
+                    <label for="responseType" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Response Length
+                    </label>
+                    <select id="responseType"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="" disabled>Select</option>
+                        <option value="Normal"> Normal</option>
+                        <option value="Short">Short</option>
+                        <option value="Lengthy">Lengthy</option>
+                        <option value="Brief" disabled="true">Brief ~ Subscription Required</option>
+                        <option value="Sentiment Analysis" disabled="true">Sentiment Analysis ~ Subscription Required
+                        </option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                Set Email Signature
+
+                <textarea id="eSig" class="resize-none mt-2 p-2 w-full h-24 rounded-md bg-gray-100" placeholder="Best,
+John Smith"></textarea>
+            </div>
+
+            <div class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                Additional Information <sw class="text-gray-300">(Experimental)</sw>
+                <textarea id="additionalInfo" class="resize-none mt-2 p-2 w-full h-24 rounded-md bg-gray-100"
+                    placeholder="Tell Delph@i special instructions to fine tune responses. e.g: Make sure to mention I love pizza!"></textarea>
+            </div>
+
+            <!-- Bottom -->
+            <div class="mt-auto">
+                <div class="text-blue-500">
+                    <a href="https://www.aymanhaque.com/" target="_blank">Browse Memberships</a>
+                </div>
+                <div>Click
+                    <a class="text-blue-500"
+                        href="https://github.com/AymanHawk/Technuf-Outlook-Extension/tree/feature-ollama-api"
+                        target="_blank">here</a>
+                    for documentation
+                </div>
             </div>
         </div>
     </div>

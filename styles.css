@@ -41,7 +41,7 @@ body {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-right: 0.5px solid white;
-    padding: 6px 18px;
+    padding: 6px 8px 6px 18px;
 }
 
 #btndivider,
@@ -115,3 +115,9 @@ body {
     overflow: visible;
     z-index: 1000;
 }
+
+.icon-style {
+    width: 24px;
+    height: 24px;
+    /* Add any additional styles here */
+  }

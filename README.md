@@ -16,9 +16,9 @@ Delph@i is an intelligent email companion designed to enhance your email experie
 
 ### Download and Install Ollama
 
-1. Visit the Ollama website at [Ollama Official Site](https://www.ollama.org/).
+1. Visit the Ollama website at [Ollama Official Site](https://www.ollama.com/).
 2. Follow the instructions to download the Ollama package for your operating system.
-3. Install Ollama by following the setup guide provided on the website.
+3. Install Ollama by following the setup guide provided on the website for your given operating system.
 
 ### Download and Install llama3
 
@@ -31,7 +31,9 @@ Delph@i is an intelligent email companion designed to enhance your email experie
     ```sh
     ollama list
     ```
-4. You should see llama3 listed among the available models.
+4. You should see llama3 listed among the available models. Native support for other models will come soon. 
+5. There are a few llama3 models available with different parameter counts such as <span style="color: green;">8b</span>, <span style="color: yellow;">70b</span>, <span style="color: red;">405b</span>.
+
 
 ## Project Installation
 

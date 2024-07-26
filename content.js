@@ -9,7 +9,7 @@ $(document).ready(() => {
       // Create a wrapper div
       const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
 
-      const outlookDropdownIcon = `<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>`
+      const outlookDropdownIcon = `<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-290 ms-Button-icon ms-Button-menuIcon menuIcon-385 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>`
       const svgIcon1 = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="icon-style pt-1" viewBox="-5.0 -10.0 110.0 135.0">
       <path fill="white" d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
@@ -485,40 +485,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     localStorage.setItem("additionalInfo", request.additionalInfo);
   }
 });
-
-
-// $(document).ready(() => {
-//   const toneSelect = document.getElementById('toneSelect');
-//   const responseType = document.getElementById('responseType');
-//   const eSigSelect = document.getElementById('eSig');
-//   const additionalInfoSelect = document.getElementById('additionalInfo');
-
-//   // Load saved values from localStorage
-//   if (localStorage.getItem('toneSelect')) {
-//     toneSelect.value = localStorage.getItem('toneSelect');
-//   }
-//   if (localStorage.getItem('responseType')) {
-//     responseType.value = localStorage.getItem('responseType');
-//   }
-//   if (localStorage.getItem('eSig')) {
-//     eSigSelect.value = localStorage.getItem('eSig');
-//   }
-//   if (localStorage.getItem('additionalInfo')) {
-//     additionalInfoSelect.value = localStorage.getItem('additionalInfo');
-//   }
-
-//   // Save values to localStorage when changed
-//   toneSelect.addEventListener('change', () => {
-//     localStorage.setItem('toneSelect', toneSelect.value);
-//   });
-//   responseType.addEventListener('change', () => {
-//     localStorage.setItem('responseType', responseType.value);
-//   });
-//   eSigSelect.addEventListener('input', () => {
-//     localStorage.setItem('eSig', eSigSelect.value);
-//   });
-//   additionalInfoSelect.addEventListener('input', () => {
-//     localStorage.setItem('additionalInfo', additionalInfoSelect.value);
-//   });
-// });
-

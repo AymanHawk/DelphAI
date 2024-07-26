@@ -1,8 +1,4 @@
-# Delph@i - Your AI-Powered Email Companion
-
-## Version 4.3
-
-Specializes in generating and optimizing email responses using llama3
+# Delph@i - AI-Powered Email Companion
 
 Delph@i is an intelligent email companion designed to enhance your email experience by leveraging AI to curate and improve your email responses.
 
@@ -14,7 +10,30 @@ Delph@i is an intelligent email companion designed to enhance your email experie
 - **Additional Information**: Include any additional information you want in your emails.
 - **Subscription Features**: Access to advanced features like Goofy tone and Sentiment Analysis.
 
-## Installation
+## Prerequisites
+
+- **Ollama**: Delph@i leverages open source LLM's via Ollama. Specifically, Delph@i was developed using llama3, so it is advised to use some version of llama for optimal results.
+
+### Download and Install Ollama
+
+1. Visit the Ollama website at [Ollama Official Site](https://www.ollama.org/).
+2. Follow the instructions to download the Ollama package for your operating system.
+3. Install Ollama by following the setup guide provided on the website.
+
+### Download and Install llama3
+
+1. After installing Ollama, open your terminal or command prompt.
+2. Run the following command to install llama3:
+    ```sh
+    ollama install llama3
+    ```
+3. Ensure that llama3 is properly installed by checking the available models:
+    ```sh
+    ollama list
+    ```
+4. You should see llama3 listed among the available models.
+
+## Project Installation
 
 1. Clone the repository:
     ```sh

@@ -48,8 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Log tone select on page load
-    logToneSelect();
+    // Load saved value from localStorage
+    const savedTone = localStorage.getItem('toneSelect');
+    if (savedTone) {
+        document.getElementById('toneSelect').value = savedTone;
+    }
 
     // Add event listener to log tone select on change
     const toneSelect = document.getElementById('toneSelect');
@@ -59,6 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Load saved value from localStorage
+    const savedResponseType = localStorage.getItem('responseType');
+    if (savedResponseType) {
+        document.getElementById('responseType').value = savedResponseType;
+    }
+
+    // Function to log response type
     function logResponseType() {
         const responseType = document.getElementById('responseType');
         if (responseType.value) {
@@ -72,15 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Log tone select on page load
-
-    logResponseType();
-
+    // Add event listener to log response type on change
     const responseType = document.getElementById('responseType');
     if (responseType) {
-        responseType.addEventListener('change', logResponseType);
+        responseType.addEventListener('change', () => {
+            const selectedResponseType = responseType.value;
+            localStorage.setItem('responseType', selectedResponseType);
+            logResponseType();
+        });
     }
 });
+
 
 document.addEventListener('DOMContentLoaded', () => {
     function logESig() {
@@ -96,17 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Log tone select on page load
+    // Log eSig on page load
     logESig();
 
-    // Add event listener to log tone select on change
+    // Add event listener to log eSig on change
     const eSigSelect = document.getElementById('eSig');
     if (eSigSelect) {
-        console.log('esig change detected')
+        console.log('esig change detected');
         eSigSelect.addEventListener('input', logESig);
     }
 
-    // Log the selected tone at regular intervals
+    // Log the selected eSig at regular intervals
     setInterval(logESig, 5000); // Logs every 5 seconds
 });
 
@@ -124,10 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Log tone select on page load
+    // Log additional info on page load
     logAdditionalInfo();
 
-    // Add event listener to log tone select on change
+    // Add event listener to log additional info on change
     const additionalInfoSelect = document.getElementById('additionalInfo');
     if (additionalInfoSelect) {
         additionalInfoSelect.addEventListener('input', logAdditionalInfo);
@@ -138,24 +150,21 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const toneSelect = document.getElementById('toneSelect');
     const responseType = document.getElementById('responseType');
-
     const eSigSelect = document.getElementById('eSig');
     const additionalInfoSelect = document.getElementById('additionalInfo');
 
     // Load saved values from localStorage
     if (localStorage.getItem('toneSelect')) {
-        console.log('first')
+        console.log('first');
         toneSelect.value = localStorage.getItem('toneSelect');
     }
     if (localStorage.getItem('responseType')) {
-        console.log('first')
+        console.log('first');
         responseType.value = localStorage.getItem('responseType');
     }
-
     if (localStorage.getItem('eSig')) {
         eSigSelect.value = localStorage.getItem('eSig');
     }
-
     if (localStorage.getItem('additionalInfo')) {
         additionalInfoSelect.value = localStorage.getItem('additionalInfo');
     }
@@ -177,4 +186,3 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('additionalInfo', additionalInfoSelect.value);
     });
 });
-

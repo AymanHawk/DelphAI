@@ -83,7 +83,6 @@ $(document).ready(() => {
       const btnLeft = $("<button>")
         .attr("id", "btnleft")
         .addClass("btn font-semibold")
-        // .text("Generate")
         .html(svgIcon1 + 'Generate')
         .click(() => {
           simulateClick().then(() =>
@@ -108,14 +107,14 @@ $(document).ready(() => {
 
       modal.append(option1, option2, option3);
 
-      btnDivider.append(btnRight, modal);
-      btnWrapper.append(btnLeft, btnDivider);
+      // btnDivider.append(btnRight, modal);
+      btnWrapper.append(btnLeft);
 
       // Append buttons to the wrapper div
       wrapperDiv.append(
         btnWrapper,
         btnWrapperImprove, // Append the Improve button structure
-        captureButton
+        // captureButton
       );
 
       // Append the wrapper div to the target div
@@ -254,7 +253,7 @@ $(document).ready(() => {
           },
           {
             role: "user",
-            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.  And your response will be in this tone: ${selectedTone}. This is the email signature you will use: ${selectedESig}. And this is any additional info you may need to know: ${selectedAdditionalInfo}. This is the response length type: ${selectedType}.`, // TODO make prompt for concise and accurate and make sure to mention
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.  And your response will be in this tone: ${selectedTone}. This is the email signature you will use, and make sure you include it at the end: ${selectedESig}. And this is any additional info you may need to know: ${selectedAdditionalInfo}. This is the response length type: ${selectedType}.`, // TODO make prompt for concise and accurate and make sure to mention
           },
         ],
         stream: true,

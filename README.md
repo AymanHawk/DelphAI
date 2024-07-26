@@ -1,4 +1,8 @@
-# Delph@i - AI-Powered Email Companion
+# Delph@i - Your AI-Powered Email Companion
+
+## Version 4.3
+
+Specializes in generating and optimizing email responses using llama3
 
 Delph@i is an intelligent email companion designed to enhance your email experience by leveraging AI to curate and improve your email responses.
 

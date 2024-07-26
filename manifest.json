@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Outlook Extension",
-    "version": "1.0",
-    "description": "A Chrome extension for Microsoft Outlook using Tailwind CSS, jQuery, and JavaScript.",
+    "name": "Delph@i",
+    "version": "4.7",
+    "description": "A Chrome extension for Microsoft Outlook leveraging generative A.I to currate and improve responses.",
     "permissions": [
         "activeTab",
         "storage"

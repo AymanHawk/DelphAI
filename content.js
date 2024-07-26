@@ -1,9 +1,5 @@
 $(document).ready(() => {
-  let emailContents = ""; // Global variable to store captured email contents
-
-  // Retrieve and log the selected tone from local storage
-  const selectedTone = localStorage.getItem('selectedTone');
-  console.log('Retrieved Selected Tone:', selectedTone);
+  let emailContents = "";
 
   // Function to add buttons
   function addButtons() {
@@ -13,9 +9,13 @@ $(document).ready(() => {
       // Create a wrapper div
       const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
 
-      // SVG icons (empty strings for now)
-      const svgIcon1 = ``;
-      const svgIcon2 = ``;
+      const outlookDropdownIcon = `<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>`
+      const svgIcon1 = `
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="icon-style pt-1" viewBox="-5.0 -10.0 110.0 135.0">
+      <path fill="white" d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
+      <path fill="white" d="m72.914 6.4922 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32422 0.56641-0.32422 0.67969 0z" />
+      <path fill="white" d="m72.914 66.406 1.2734 3.5273c1.4141 3.9141 4.4961 7 8.4141 8.4141l3.5273 1.2734c0.32031 0.11719 0.32031 0.56641 0 0.67969l-3.5273 1.2734c-3.9141 1.4141-7 4.4961-8.4141 8.4141l-1.2734 3.5273c-0.11719 0.32031-0.56641 0.32031-0.67969 0l-1.2734-3.5273c-1.4141-3.9141-4.4961-7-8.4141-8.4141l-3.5273-1.2734c-0.32031-0.11719-0.32031-0.56641 0-0.67969l3.5273-1.2734c3.9141-1.4141 7-4.4961 8.4141-8.4141l1.2734-3.5273c0.11328-0.32031 0.56641-0.32031 0.67969 0z" />
+    </svg>`;
 
       // Create Generate button with onclick function
       const generateButton = $("<button>")
@@ -36,7 +36,8 @@ $(document).ready(() => {
       const btnLeftImprove = $("<button>")
         .attr("id", "btnleft-improve")
         .addClass("btn font-semibold")
-        .text("Optimize")
+        // .text("Optimize")
+        .html(svgIcon1 + "Optimize")
         .click(() => {
           callImproveApi(); // Directly call the improved API function without simulating clicks or capturing email contents
         });
@@ -47,10 +48,7 @@ $(document).ready(() => {
 
       const btnRightImprove = $("<button>")
         .attr("id", "btnright-improve")
-        .addClass("btn mr-2")
-        .html(`
-<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>
-    `);
+        .addClass("btn mr-2").html(`${outlookDropdownIcon}`);
 
       // Create the modal structure for Improve button
       const modalImprove = $("<div>").addClass("dropdown-modal hidden");
@@ -70,7 +68,7 @@ $(document).ready(() => {
       btnWrapperImprove.append(btnLeftImprove, btnDividerImprove);
 
       const captureButton = $("<button>")
-        .html("Stream")
+        .html("Generate w/o Stream") //TODO
         .addClass(
           "bg-red-500 text-white px-2 py-1 m-0 mr-2 rounded inline-flex items-center"
         )
@@ -85,7 +83,7 @@ $(document).ready(() => {
       const btnLeft = $("<button>")
         .attr("id", "btnleft")
         .addClass("btn font-semibold")
-        .text("Generate")
+        .html(svgIcon1 + 'Generate')
         .click(() => {
           simulateClick().then(() =>
             captureEmailContents().then((contents) => callOllamaApi(contents))
@@ -95,9 +93,7 @@ $(document).ready(() => {
         .attr("id", "btndivider")
         .addClass("dropdown relative");
       const btnRight = $("<button>").attr("id", "btnright").addClass("btn mr-2")
-        .html(`
-<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>
-          `); // Added SVG for dropdown icon
+        .html(``);
 
       // Create the modal structure
       const modal = $("<div>").addClass("dropdown-modal hidden");
@@ -111,14 +107,14 @@ $(document).ready(() => {
 
       modal.append(option1, option2, option3);
 
-      btnDivider.append(btnRight, modal);
-      btnWrapper.append(btnLeft, btnDivider);
+      // btnDivider.append(btnRight, modal);
+      btnWrapper.append(btnLeft);
 
       // Append buttons to the wrapper div
       wrapperDiv.append(
         btnWrapper,
         btnWrapperImprove, // Append the Improve button structure
-        captureButton
+        // captureButton
       );
 
       // Append the wrapper div to the target div
@@ -234,6 +230,15 @@ $(document).ready(() => {
   };
 
   function callOllamaApi(contents) {
+    const selectedType = localStorage.getItem("responseType") || "NOT PICKED";
+    console.log("Selected Tone from localStorage:", selectedType);
+    const selectedTone = localStorage.getItem("toneSelect") || "NOT PICKED";
+    console.log("Selected Length from localStorage:", selectedTone);
+    const selectedESig = localStorage.getItem("eSig") || "";
+    console.log("Selected eSig from localStorage:", selectedESig);
+    const selectedAdditionalInfo = localStorage.getItem("additionalInfo") || "";
+    console.log("Selected AdditionalInfo from localStorage:", selectedAdditionalInfo);
+
     fetch("http://localhost:11434/api/chat", {
       method: "POST",
       headers: {
@@ -244,37 +249,46 @@ $(document).ready(() => {
         messages: [
           {
             role: "system",
-            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient. And your response will be in this tone: ${JSONformat.tone}`,
+            content: `You respond to emails in the perspective of the email recipient (whose name is Ayman Haque), by using the entire email thread as context. The email thread will be provided to you and you will respond as if you are the email recipient.`,
           },
           {
             role: "user",
-            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.`, // TODO make prompt for concise and accurate and make sure to mention 
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}. Only return the body, not the subject line and do not say "Here is my response" I only want the response itself.  And your response will be in this tone: ${selectedTone}. This is the email signature you will use, and make sure you include it at the end: ${selectedESig}. And this is any additional info you may need to know: ${selectedAdditionalInfo}. This is the response length type: ${selectedType}.`, // TODO make prompt for concise and accurate and make sure to mention
           },
         ],
         stream: true,
         // format: "json",
       }),
-    }).then((response) => {
-      console.log(response);
-      return response.body
     })
+      .then((response) => {
+        console.log(response);
+        return response.body;
+      })
       .then((stream) => {
         const reader = stream.getReader();
         function readSteam() {
           reader.read().then(({ done, value }) => {
             if (done) {
-              console.log('Stream completed');
+              console.log("Stream completed");
               return;
             }
             const chunk = new TextDecoder().decode(value);
-            const JSONdata = JSON.parse(chunk);
-            appendEmailContent(JSONdata.message.content);
-            readSteam(); // Continue reading the stream
+            try {
+              const JSONdata = JSON.parse(chunk);
+              appendEmailContent(JSONdata.message.content);
+              readSteam();
+              // let index = 0;
+              // index++; //TODO if index exceeds 3 then return FAIL and prompt user 
+            } catch (error) {
+              console.error("Error parsing JSON -> REDO* ", error)
+              callOllamaApi(contents);
+            }
           });
         }
         updateEmailContent('');
         readSteam();
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error calling API:", error);
       });
   }
@@ -294,19 +308,20 @@ $(document).ready(() => {
           },
           {
             role: "user",
-            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}`, // TODO make prompt for concise and accurate and make sure to mention 
+            content: `Give me a rely to this email ${contents}. I am Ayman Haque, you will repsond back as if you are me in the tone of ${JSONformat.tone}.`, // TODO make prompt for concise and accurate and make sure to mention
           },
         ],
         stream: true,
         // format: "json",
       }),
-    }).then((response) => response.body)
+    })
+      .then((response) => response.body)
       .then((stream) => {
         const reader = stream.getReader();
         function readStream() {
           reader.read().then(({ done, value }) => {
             if (done) {
-              console.log('Stream completed');
+              console.log("Stream completed");
               return;
             }
             const chunk = new TextDecoder().decode(value);
@@ -350,7 +365,7 @@ $(document).ready(() => {
         function readSteam() {
           reader.read().then(({ done, value }) => {
             if (done) {
-              console.log('Stream completed');
+              console.log("Stream completed");
               return;
             }
             const chunk = new TextDecoder().decode(value);
@@ -361,23 +376,28 @@ $(document).ready(() => {
         }
         updateEmailContent('');
         readSteam();
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error calling API:", error);
       });
   }
 
   const improvedResponseSample = [
     {
-      incomingResponse: "Todya wIll be a good day.. i cant wait to get started !",
-      improvedResponse: "Today will be a good day. I can't wait to get started!",
+      incomingResponse:
+        "Todya wIll be a good day.. i cant wait to get started !",
+      improvedResponse:
+        "Today will be a good day. I can't wait to get started!",
     },
     {
       incomingResponse: "Heyy, how are you doing. I hopee youre welll.",
       improvedResponse: "Hey, how are you doing? I hope you're well.",
     },
     {
-      incomingResponse: "Whta is the plan for tomrrow? Let me know if I need to prepare anythng.",
-      improvedResponse: "What is the plan for tomorrow? Let me know if I need to prepare anything.",
+      incomingResponse:
+        "Whta is the plan for tomrrow? Let me know if I need to prepare anythng.",
+      improvedResponse:
+        "What is the plan for tomorrow? Let me know if I need to prepare anything.",
     },
   ];
 
@@ -387,9 +407,8 @@ $(document).ready(() => {
   }
 
   function appendEmailContent(content) {
-
-    if (`${content}`.includes('\n')) {
-      content = `${content}`.replace(/\n/g, '<br>');
+    if (`${content}`.includes("\n")) {
+      content = `${content}`.replace(/\n/g, "<br>");
     }
     $("div.elementToProof").append(content);
   }
@@ -435,3 +454,71 @@ $(document).ready(() => {
     "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
   document.head.appendChild(tailwindLink);
 });
+
+// Function to log values from local storage
+function logLocalStorageValues() {
+  console.log("Tone Select:", localStorage.getItem("toneSelect"));
+  console.log("Response Type:", localStorage.getItem("responseType"));
+  console.log("Email Signature:", localStorage.getItem("eSig"));
+  console.log("Additional Info:", localStorage.getItem("additionalInfo"));
+}
+
+// Log values initially when content script loads
+logLocalStorageValues();
+
+// Listen for messages from the background script or popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+  console.log('REQUEST CLG ***',request)
+
+  if (request.action === "logToneSelect") {
+    console.log("Selected Tone:", request.tone);
+    localStorage.setItem("toneSelect", request.tone);
+  }else if (request.action === "logResponseType") {
+    console.log("Selected Response Type:", request.responseType);
+    localStorage.setItem("responseType", request.responseType);
+  }else if (request.action === "logESig") {
+    console.log("Selected eSig:", request.eSig);
+    localStorage.setItem("eSig", request.eSig);
+  }else if (request.action === "logAdditionalInfo") {
+    console.log("Selected Additional Info:", request.additionalInfo);
+    localStorage.setItem("additionalInfo", request.additionalInfo);
+  }
+});
+
+
+// $(document).ready(() => {
+//   const toneSelect = document.getElementById('toneSelect');
+//   const responseType = document.getElementById('responseType');
+//   const eSigSelect = document.getElementById('eSig');
+//   const additionalInfoSelect = document.getElementById('additionalInfo');
+
+//   // Load saved values from localStorage
+//   if (localStorage.getItem('toneSelect')) {
+//     toneSelect.value = localStorage.getItem('toneSelect');
+//   }
+//   if (localStorage.getItem('responseType')) {
+//     responseType.value = localStorage.getItem('responseType');
+//   }
+//   if (localStorage.getItem('eSig')) {
+//     eSigSelect.value = localStorage.getItem('eSig');
+//   }
+//   if (localStorage.getItem('additionalInfo')) {
+//     additionalInfoSelect.value = localStorage.getItem('additionalInfo');
+//   }
+
+//   // Save values to localStorage when changed
+//   toneSelect.addEventListener('change', () => {
+//     localStorage.setItem('toneSelect', toneSelect.value);
+//   });
+//   responseType.addEventListener('change', () => {
+//     localStorage.setItem('responseType', responseType.value);
+//   });
+//   eSigSelect.addEventListener('input', () => {
+//     localStorage.setItem('eSig', eSigSelect.value);
+//   });
+//   additionalInfoSelect.addEventListener('input', () => {
+//     localStorage.setItem('additionalInfo', additionalInfoSelect.value);
+//   });
+// });
+

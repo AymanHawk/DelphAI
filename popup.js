@@ -33,3 +33,156 @@ $(document).ready(() => {
         alert('Button clicked!');
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    function logToneSelect() {
+        const toneSelect = document.getElementById('toneSelect');
+        if (toneSelect.value) {
+            const selectedTone = toneSelect.value;
+            console.log('Selected Tone:', selectedTone);
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "logToneSelect", tone: selectedTone });
+            });
+        } else {
+            console.log('toneSelect element not found');
+        }
+    }
+
+    // Load saved value from localStorage
+    const savedTone = localStorage.getItem('toneSelect');
+    if (savedTone) {
+        document.getElementById('toneSelect').value = savedTone;
+    }
+
+    // Add event listener to log tone select on change
+    const toneSelect = document.getElementById('toneSelect');
+    if (toneSelect) {
+        toneSelect.addEventListener('change', logToneSelect);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Load saved value from localStorage
+    const savedResponseType = localStorage.getItem('responseType');
+    if (savedResponseType) {
+        document.getElementById('responseType').value = savedResponseType;
+    }
+
+    // Function to log response type
+    function logResponseType() {
+        const responseType = document.getElementById('responseType');
+        if (responseType.value) {
+            const selectedResponseType = responseType.value;
+            console.log('Selected Response Type:', selectedResponseType);
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "logResponseType", responseType: selectedResponseType });
+            });
+        } else {
+            console.log('responseType element not found');
+        }
+    }
+
+    // Add event listener to log response type on change
+    const responseType = document.getElementById('responseType');
+    if (responseType) {
+        responseType.addEventListener('change', () => {
+            const selectedResponseType = responseType.value;
+            localStorage.setItem('responseType', selectedResponseType);
+            logResponseType();
+        });
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    function logESig() {
+        const eSig = document.getElementById('eSig');
+        if (eSig.value) {
+            const selectedESig = eSig.value;
+            console.log('Selected Tone:', selectedESig); // This will log in the popup's console
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "logESig", eSig: selectedESig });
+            });
+        } else {
+            console.log('selectedESig element not found');
+        }
+    }
+
+    // Log eSig on page load
+    logESig();
+
+    // Add event listener to log eSig on change
+    const eSigSelect = document.getElementById('eSig');
+    if (eSigSelect) {
+        console.log('esig change detected');
+        eSigSelect.addEventListener('input', logESig);
+    }
+
+    // Log the selected eSig at regular intervals
+    setInterval(logESig, 5000); // Logs every 5 seconds
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    function logAdditionalInfo() {
+        const additionalInfoSelect = document.getElementById('additionalInfo');
+        if (additionalInfoSelect.value) {
+            const selectedAdditionalInfo = additionalInfoSelect.value;
+            console.log('Selected Additional Info:', selectedAdditionalInfo); // This will log in the popup's console
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "logAdditionalInfo", additionalInfo: selectedAdditionalInfo });
+            });
+        } else {
+            console.log('additionalInfoSelect element not found');
+        }
+    }
+
+    // Log additional info on page load
+    logAdditionalInfo();
+
+    // Add event listener to log additional info on change
+    const additionalInfoSelect = document.getElementById('additionalInfo');
+    if (additionalInfoSelect) {
+        additionalInfoSelect.addEventListener('input', logAdditionalInfo);
+    }
+    setInterval(logAdditionalInfo, 5000);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toneSelect = document.getElementById('toneSelect');
+    const responseType = document.getElementById('responseType');
+    const eSigSelect = document.getElementById('eSig');
+    const additionalInfoSelect = document.getElementById('additionalInfo');
+
+    // Load saved values from localStorage
+    if (localStorage.getItem('toneSelect')) {
+        console.log('first');
+        toneSelect.value = localStorage.getItem('toneSelect');
+    }
+    if (localStorage.getItem('responseType')) {
+        console.log('first');
+        responseType.value = localStorage.getItem('responseType');
+    }
+    if (localStorage.getItem('eSig')) {
+        eSigSelect.value = localStorage.getItem('eSig');
+    }
+    if (localStorage.getItem('additionalInfo')) {
+        additionalInfoSelect.value = localStorage.getItem('additionalInfo');
+    }
+
+    // Save toneSelect value to localStorage when changed
+    toneSelect.addEventListener('change', () => {
+        localStorage.setItem('toneSelect', toneSelect.value);
+    });
+
+    // Save responseType value to localStorage when changed
+    responseType.addEventListener('change', () => {
+        localStorage.setItem('responseType', responseType.value);
+    });
+
+    eSigSelect.addEventListener('input', () => {
+        localStorage.setItem('eSig', eSigSelect.value);
+    });
+    additionalInfoSelect.addEventListener('input', () => {
+        localStorage.setItem('additionalInfo', additionalInfoSelect.value);
+    });
+});

@@ -32,7 +32,7 @@ Delph@i is an intelligent email companion designed to enhance your email experie
     ollama list
     ```
 4. You should see llama3 listed among the available models. Native support for other models will come soon.
-5. There are a few llama3 models available with different parameter counts such as 8b 🟢, 70b 🟡, and 405b 🔴. Downloading llama3: 8b 🟢 is advised, as larger parameter models will require a higher performing computer, since ollama runs locally on your computer.
+5. There are a few llama3 models available with different parameter counts such as 8b 🟢, 70b 🟡, and 405b 🔴. Downloading llama3: 8b 🟢 is advised, as larger parameter models will require a higher performing computer since ollama runs locally on your computer.
 
 ## Project Installation
 
@@ -92,3 +92,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         localStorage.setItem("additionalInfo", request.additionalInfo);
     }
 });
+```
+# FAQs 
+
+## Not seeing the buttons load? 
+make sure to clear cache and cookies

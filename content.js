@@ -262,6 +262,7 @@ $(document).ready(() => {
     })
       .then((response) => {
         console.log(response);
+        updateEmailContent('');
         return response.body;
       })
       .then((stream) => {
@@ -285,7 +286,7 @@ $(document).ready(() => {
             }
           });
         }
-        updateEmailContent('');
+        // updateEmailContent(''); //TODO why is this not working -> had to put in line 265 instead for now 
         readSteam();
       })
       .catch((error) => {

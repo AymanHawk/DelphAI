@@ -1,15 +1,34 @@
+let sessionResponses = [];
+let currentIndex = -1;
+
+function updateCounter() {
+  $('#counter-div').html(`${currentIndex + 1} / ${sessionResponses.length}`);
+}
 $(document).ready(() => {
   let emailContents = "";
 
-  // Function to add buttons
   function addButtons() {
     const targetClass = "OTADH xukFz";
     const targetDiv = $(`div.${targetClass.replace(/ /g, ".")}`);
     if (targetDiv.length && !targetDiv.find("#custom-button-wrapper").length) {
       // Create a wrapper div
-      const wrapperDiv = $('<div id="custom-button-wrapper"></div>');
+      const wrapperDiv = $('<div id="custom-button-wrapper" class="flex items-center space-x-2"></div>');
 
-      const outlookDropdownIcon = `<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-288 ms-Button-icon ms-Button-menuIcon menuIcon-409 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>`
+      // Create navigation buttons
+      const leftButton = $('<button>')
+        .addClass('bg-gray-100 hover:bg-gray-200 rounded-l-md mr-1')
+        .html(`<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>`);
+
+      const rightButton = $('<button>')
+        .addClass('bg-gray-100 hover:bg-gray-200 rounded-r-md')
+        .html(`    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>`);
+
+
+      const outlookDropdownIcon = `<i data-icon-name="ChevronDown" aria-hidden="true" class="ms-Icon root-89 css-290 ms-Button-icon ms-Button-menuIcon menuIcon-385 ms-Button-menuIcon menuIcon-162" style="font-family: controlIcons;"></i>`
       const svgIcon1 = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="icon-style pt-1" viewBox="-5.0 -10.0 110.0 135.0">
       <path fill="white" d="m41.543 23.238 2.5078 6.9688c2.7891 7.7344 8.8789 13.824 16.613 16.613l6.9688 2.5078c0.62891 0.22656 0.62891 1.1172 0 1.3438l-6.9688 2.5078c-7.7344 2.7891-13.824 8.8789-16.613 16.613l-2.5078 6.9688c-0.22656 0.62891-1.1172 0.62891-1.3438 0l-2.5078-6.9688c-2.7891-7.7344-8.8789-13.824-16.613-16.613l-6.9688-2.5078c-0.62891-0.22656-0.62891-1.1172 0-1.3438l6.9688-2.5078c7.7344-2.7891 13.824-8.8789 16.613-16.613l2.5078-6.9688c0.22656-0.63281 1.1172-0.63281 1.3438 0z" />
@@ -48,9 +67,9 @@ $(document).ready(() => {
 
       const btnRightImprove = $("<button>")
         .attr("id", "btnright-improve")
-        .addClass("btn mr-2").html(`${outlookDropdownIcon}`);
+        .addClass("btn mr-1").html(`${outlookDropdownIcon}`);
 
-      // Create the modal structure for Improve button
+      // Create the modal structure for Improve button 
       const modalImprove = $("<div>").addClass("dropdown-modal hidden");
       const option1Improve = $("<button>")
         .addClass("dropdown-option")
@@ -65,7 +84,7 @@ $(document).ready(() => {
       modalImprove.append(option1Improve, option2Improve, option3Improve);
 
       btnDividerImprove.append(btnRightImprove, modalImprove);
-      btnWrapperImprove.append(btnLeftImprove, btnDividerImprove);
+      btnWrapperImprove.append(btnLeftImprove);
 
       const captureButton = $("<button>")
         .html("Generate w/o Stream") //TODO
@@ -105,6 +124,9 @@ $(document).ready(() => {
         .text("Informal");
       const option3 = $("<button>").addClass("dropdown-option").text("Silly");
 
+    // Create counter div
+    const counterDiv = $('<div id="counter-div" class="ml-2 p-2 flex"></div>');
+
       modal.append(option1, option2, option3);
 
       // btnDivider.append(btnRight, modal);
@@ -117,21 +139,37 @@ $(document).ready(() => {
         // captureButton
       );
 
-      // Append the wrapper div to the target div
-      targetDiv.append(wrapperDiv);
-
       console.log("Buttons with SVG icons added to the target div.");
 
-      // Add event listener to toggle modal visibility for Generate button
-      btnRight.on("click", (e) => {
-        e.stopPropagation();
-        modal.toggleClass("hidden");
-      });
+      function displayResponse(response) {
+        console.log(sessionResponses);
+        const emailContentDiv = $('div.elementToProof');
+        if (emailContentDiv.length > 0) {
+          emailContentDiv.html(response.replace(/\n/g, '<br>'));
+        } else {
+          console.error("Email content div not found.");
+        }
+      }
 
-      // Add event listener to toggle modal visibility for Improve button
-      btnRightImprove.on("click", (e) => {
-        e.stopPropagation();
-        modalImprove.toggleClass("hidden");
+      wrapperDiv.append(leftButton, rightButton); //TODO add a position counter to the right of the buttons 
+      targetDiv.append(wrapperDiv);
+
+      console.log("Navigation buttons added to the target div.");
+
+      leftButton.click(() => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          displayResponse(sessionResponses[currentIndex]);
+          updateCounter();
+        }
+      });
+  
+      rightButton.click(() => {
+        if (currentIndex < sessionResponses.length - 1) {
+          currentIndex++;
+          displayResponse(sessionResponses[currentIndex]);
+          updateCounter();
+        }
       });
 
       // Hide modal when clicking outside
@@ -146,6 +184,8 @@ $(document).ready(() => {
           modalImprove.addClass("hidden");
         }
       });
+
+      updateCounter();
     } else {
       // console.log("Target div not found, retrying..."); //TODO check!!
       setTimeout(addButtons, 100); // Retry after 1 second
@@ -245,7 +285,7 @@ $(document).ready(() => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3",
+        model: "llama3.1",
         messages: [
           {
             role: "system",
@@ -262,36 +302,64 @@ $(document).ready(() => {
     })
       .then((response) => {
         console.log(response);
+        updateEmailContent('');
         return response.body;
       })
       .then((stream) => {
         const reader = stream.getReader();
+        let accumulatedResponse = "";
         function readSteam() {
           reader.read().then(({ done, value }) => {
             if (done) {
               console.log("Stream completed");
+              sessionResponses.push(accumulatedResponse);
+              currentIndex = sessionResponses.length - 1; // Move to the latest response
+              displayResponse(sessionResponses[currentIndex]);
+              updateCounter(); 
               return;
             }
             const chunk = new TextDecoder().decode(value);
             try {
               const JSONdata = JSON.parse(chunk);
+              // const responseContent = JSONdata.message.content;
+              try {
+                accumulatedResponse += JSONdata.message.content
+              } catch (error) {
+                console.error('Capture Response Failed ->', error)
+              }
               appendEmailContent(JSONdata.message.content);
               readSteam();
-              // let index = 0;
-              // index++; //TODO if index exceeds 3 then return FAIL and prompt user 
             } catch (error) {
               console.error("Error parsing JSON -> REDO* ", error)
               callOllamaApi(contents);
             }
           });
         }
-        updateEmailContent('');
+        // updateEmailContent(''); //TODO why is this not working -> had to put in line 265 instead for now 
         readSteam();
       })
       .catch((error) => {
         console.error("Error calling API:", error);
       });
   }
+
+  // Define helper functions for local storage
+  function getStoredResponses() {
+    const storedResponses = localStorage.getItem('responses');
+    return storedResponses ? JSON.parse(storedResponses) : [];
+  }
+
+  function saveResponse(response) {
+    const responses = getStoredResponses();
+    responses.push(response);
+    localStorage.setItem('responses', JSON.stringify(responses));
+  }
+
+  function logStoredResponses() {
+    const responses = getStoredResponses();
+    console.log("Stored Responses:", responses);
+  }
+
 
   function streamOllamaApi(contents) {
     fetch("http://localhost:11434/api/chat", {
@@ -300,7 +368,7 @@ $(document).ready(() => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3",
+        model: "llama3.1",
         messages: [
           {
             role: "system",
@@ -345,7 +413,7 @@ $(document).ready(() => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3",
+        model: "llama3.1",
         messages: [
           {
             role: "system",
@@ -469,56 +537,19 @@ logLocalStorageValues();
 // Listen for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
-  console.log('REQUEST CLG ***',request)
+  console.log('REQUEST CLG ***', request)
 
   if (request.action === "logToneSelect") {
     console.log("Selected Tone:", request.tone);
     localStorage.setItem("toneSelect", request.tone);
-  }else if (request.action === "logResponseType") {
+  } else if (request.action === "logResponseType") {
     console.log("Selected Response Type:", request.responseType);
     localStorage.setItem("responseType", request.responseType);
-  }else if (request.action === "logESig") {
+  } else if (request.action === "logESig") {
     console.log("Selected eSig:", request.eSig);
     localStorage.setItem("eSig", request.eSig);
-  }else if (request.action === "logAdditionalInfo") {
+  } else if (request.action === "logAdditionalInfo") {
     console.log("Selected Additional Info:", request.additionalInfo);
     localStorage.setItem("additionalInfo", request.additionalInfo);
   }
 });
-
-
-// $(document).ready(() => {
-//   const toneSelect = document.getElementById('toneSelect');
-//   const responseType = document.getElementById('responseType');
-//   const eSigSelect = document.getElementById('eSig');
-//   const additionalInfoSelect = document.getElementById('additionalInfo');
-
-//   // Load saved values from localStorage
-//   if (localStorage.getItem('toneSelect')) {
-//     toneSelect.value = localStorage.getItem('toneSelect');
-//   }
-//   if (localStorage.getItem('responseType')) {
-//     responseType.value = localStorage.getItem('responseType');
-//   }
-//   if (localStorage.getItem('eSig')) {
-//     eSigSelect.value = localStorage.getItem('eSig');
-//   }
-//   if (localStorage.getItem('additionalInfo')) {
-//     additionalInfoSelect.value = localStorage.getItem('additionalInfo');
-//   }
-
-//   // Save values to localStorage when changed
-//   toneSelect.addEventListener('change', () => {
-//     localStorage.setItem('toneSelect', toneSelect.value);
-//   });
-//   responseType.addEventListener('change', () => {
-//     localStorage.setItem('responseType', responseType.value);
-//   });
-//   eSigSelect.addEventListener('input', () => {
-//     localStorage.setItem('eSig', eSigSelect.value);
-//   });
-//   additionalInfoSelect.addEventListener('input', () => {
-//     localStorage.setItem('additionalInfo', additionalInfoSelect.value);
-//   });
-// });
-

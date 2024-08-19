@@ -22,7 +22,7 @@ Delph@i is an intelligent email companion designed to enhance your email experie
 
 ### Download and Install llama3
 
-1. After installing Ollama, open your terminal or command prompt.
+1. After installing Ollama, open your terminal or command prompt. random change
 2. Run the following command to install llama3:
     ```sh
     ollama install llama3

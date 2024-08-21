@@ -67,6 +67,7 @@ Delph@i is an intelligent email companion designed to enhance your email experie
     ```sh
     launchctl setenv OLLAMA_ORIGINS "*"
     ```
+    for mac
 7. Finally, click on the generate button to draft a new email response, or the optimize button to fix any grammar or spelling mistakes on an existing draft
 
 ## Code Structure

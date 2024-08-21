@@ -63,11 +63,11 @@ Delph@i is an intelligent email companion designed to enhance your email experie
     ```sh
     setx OLLAMA_ORIGINS "*"
     ```
-    on windows or 
+    if on windows or
     ```sh
     launchctl setenv OLLAMA_ORIGINS "*"
     ```
-    for mac
+    if on mac
 7. Finally, click on the generate button to draft a new email response, or the optimize button to fix any grammar or spelling mistakes on an existing draft
 
 ## Code Structure

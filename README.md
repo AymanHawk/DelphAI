@@ -55,6 +55,19 @@ Delph@i is an intelligent email companion designed to enhance your email experie
 2. Select your desired tone from the dropdown menu.
 3. Choose the response type and add your email signature and any additional information.
 4. The extension will save your preferences and apply them to your email responses.
+5. Make sure to have ollama running locally on your computer by running
+    ```sh
+    ollama serve
+    ```
+6. Then, run this command 
+    ```sh
+    setx OLLAMA_ORIGINS "*"
+    ```
+    on windows or 
+    ```sh
+    launchctl setenv OLLAMA_ORIGINS "*"
+    ```
+7. Finally, click on the generate button to draft a new email response, or the optimize button to fix any grammar or spelling mistakes on an existing draft
 
 ## Code Structure
 
@@ -96,4 +109,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 # FAQs 
 
 ## Not seeing the buttons load? 
-make sure to clear cache and cookies
+1. Make sure to clear cache and cookies
+2. Ensure that on outlook, your layout is set to Newest on Bottom
+3. If you are only signed into Outlook on one account, try adding a second account
